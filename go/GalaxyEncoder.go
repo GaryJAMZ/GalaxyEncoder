@@ -19,12 +19,12 @@ func GalaxyEncoder(text string, bytesToUse int) (string, error) {
 	encodedText, _ = buildText(bytesToUse, encodedTextInHex, clave, false)
 	return encodedText, nil
 }
-func GalaxyDecoder(textencode string, bytesToUse int) (string, error) {
+func GalaxyDecoder(textencode string, bytesUsed int) (string, error) {
 	var hexText, decodedText string
-	if bytesToUse > 10 || bytesToUse < 1 {
+	if bytesUsed > 10 || bytesUsed < 1 {
 		return "", fmt.Errorf("bytes to use must be between 1 and 10")
 	}
-	hexText, clavesToAdd := buildText(bytesToUse, textencode, []byte{}, true)
+	hexText, clavesToAdd := buildText(bytesUsed, textencode, []byte{}, true)
 	clave := []byte{}
 	for _, claveHex := range clavesToAdd {
 		for i := 0; i < len(claveHex); i += 2 {
