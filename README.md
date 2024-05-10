@@ -1,0 +1,2 @@
+# GalaxyEncoder
+Codificador de datos
