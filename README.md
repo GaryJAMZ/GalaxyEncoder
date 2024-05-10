@@ -6,7 +6,7 @@ A futuro me gustaria integrar mas funciones para UTF-16 y UTF-32 abarcando mas c
 
 ## Instalar galaxyencoder
 
-Para instalar galaxyencoder package usando Go:
+Para instalar usando Go:
 
 ```go
 go get github.com/GaryJAMZ/GalaxyEncoder/go
