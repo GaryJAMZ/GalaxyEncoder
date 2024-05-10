@@ -1,6 +1,6 @@
 {
   "name": "galaxyencoder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Codificador de datos invirtiendo bits tomando una clave aletoria y retornando un string hexadecimal",
   "main": "GalaxyEncoder.ts",
   "scripts": {
