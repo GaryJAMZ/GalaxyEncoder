@@ -5,8 +5,8 @@ export function GalaxyEncoder(text: string, bytesToUse: number): string {
     }).join(''), clave, bytesToUse,false);
     return results[0];
 }
-export function GalaxyDecoder(textencode: string, bytesToUse: number): string {
-    const results = buildText(textencode, [], bytesToUse, true);
+export function GalaxyDecoder(textencode: string, bytesUsed: number): string {
+    const results = buildText(textencode, [], bytesUsed, true);
     let clavehex: number[] = [];
     for (let i = 0; i < results[1].length; i += 2) {
         clavehex.push(parseInt(results[1].slice(i, i + 2), 16));
