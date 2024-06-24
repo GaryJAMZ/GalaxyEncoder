@@ -1,9 +1,11 @@
 {
   "name": "galaxyencoder",
-  "version": "1.0.3",
-  "description": "Codificador de datos invirtiendo bits tomando una clave aletoria y retornando un string hexadecimal",
-  "main": "GalaxyEncoder.ts",
+  "version": "1.1.1",
+  "description": "Codificador de datos invirtiendo bits tomando una clave aleatoria y retornando un string hexadecimal",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,5 +16,8 @@
     "encoder"
   ],
   "author": "Jose Antonio Garibay Marcelo",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.2"
+  }
 }
