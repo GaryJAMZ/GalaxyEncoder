@@ -6,47 +6,48 @@ import (
 	"strconv"
 )
 
-func GalaxyEncoder(text string, bytesToUse int) (string, error) {
-	var encodedText, encodedTextInHex string
-	if bytesToUse > 10 || bytesToUse < 1 {
-		return "", fmt.Errorf("bytes to use must be between 1 and 10")
+func GalaxyHexEncoder(textToEncode string, lenKey int) string {
+	return fmt.Sprintf("%x", GalaxyEncoder([]byte(textToEncode), lenKey))
+}
+func GalaxyHexDecoder(encodedText string, lenKey int) string {
+	var arrayBytes []byte
+	for i := 0; i < len(encodedText); i += 2 {
+		byteValue, _ := strconv.ParseUint(encodedText[i:i+2], 16, 8)
+		arrayBytes = append(arrayBytes, byte(byteValue))
 	}
-	clave := make([]byte, bytesToUse)
+	return string(GalaxyDecoder(arrayBytes, lenKey))
+}
+func GalaxyEncoder(bytesToEncode []byte, lenKey int) []byte {
+	if lenKey < 1 {
+		lenKey = 1
+	} else if lenKey > 10 {
+		lenKey = 10
+	}
+
+	var enodedBytes []byte
+	clave := make([]byte, lenKey)
 	rand.Read(clave)
-	for _, char := range text {
-		encodedTextInHex += fmt.Sprintf("%02x", binaryChanger(clave, fmt.Sprintf("%08b", char), false))
+	fmt.Println(clave)
+	for _, b := range bytesToEncode {
+		enodedBytes = append(enodedBytes, bynaryChangerBytes(clave, b, false))
 	}
-	encodedText, _ = buildText(bytesToUse, encodedTextInHex, clave, false)
-	return encodedText, nil
+	finalBytes, _ := buildBytes(lenKey, enodedBytes, clave, false)
+	return finalBytes
 }
-func GalaxyDecoder(textencode string, bytesUsed int) (string, error) {
-	var hexText, decodedText string
-	if bytesUsed > 10 || bytesUsed < 1 {
-		return "", fmt.Errorf("bytes to use must be between 1 and 10")
+func GalaxyDecoder(encodedBytes []byte, lenKey int) []byte {
+	if lenKey < 1 {
+		lenKey = 1
+	} else if lenKey > 10 {
+		lenKey = 10
 	}
-	hexText, clavesToAdd := buildText(bytesUsed, textencode, []byte{}, true)
-	clave := []byte{}
-	for _, claveHex := range clavesToAdd {
-		for i := 0; i < len(claveHex); i += 2 {
-			resp, _ := strconv.ParseInt(claveHex[i:i+2], 16, 64)
-			clave = append(clave, byte(resp))
-		}
+	encodedBytes, clave := buildBytes(lenKey, encodedBytes, nil, true)
+	var decodedBytes []byte
+	for _, b := range encodedBytes {
+		decodedBytes = append(decodedBytes, bynaryChangerBytes(clave, b, true))
 	}
-	for i := 0; i < len(hexText); i += 2 {
-		hexByte := hexText[i : i+2]
-		charcode, _ := strconv.ParseInt(hexByte, 16, 64)
-		decodedText += string(binaryChanger(clave, fmt.Sprintf("%08b", charcode), true))
-	}
-	return decodedText, nil
+	return decodedBytes
 }
-func binaryChanger(claves []byte, charBinary string, dencode bool) int {
-	for i := 0; i < len(claves)-1; i++ {
-		for j := i + 1; j < len(claves); j++ {
-			if claves[i] > claves[j] {
-				claves[i], claves[j] = claves[j], claves[i]
-			}
-		}
-	}
+func bynaryChangerBytes(claves []byte, databyte byte, dencode bool) byte {
 	indextoinvert := []int{}
 	for _, clave := range claves {
 		var positions []int
@@ -62,31 +63,47 @@ func binaryChanger(claves []byte, charBinary string, dencode bool) int {
 			}
 		}
 	}
-	for _, position := range indextoinvert {
-		bit := "1"
-		if charBinary[position] == '1' {
-			bit = "0"
+	byteToString := fmt.Sprintf("%08b", databyte)
+	bits := []rune(byteToString)
+	for _, index := range indextoinvert {
+		if index >= 0 && index < 8 {
+			if bits[index] == '1' {
+				bits[index] = '0'
+			} else {
+				bits[index] = '1'
+			}
 		}
-		charBinary = charBinary[:position] + bit + charBinary[position+1:]
 	}
-	result, _ := strconv.ParseInt(charBinary, 2, 64)
-	return int(result)
+	newByteString := string(bits)
+	newbyte, err := strconv.ParseUint(newByteString, 2, 8)
+	if err != nil {
+		fmt.Println("Error converting binary string to byte:", err)
+		return 0
+	}
+
+	return byte(newbyte)
 }
-func buildText(bytesToUse int, text string, clave []byte, decode bool) (string, []string) {
-	var clavesToAdd []string
+func buildBytes(bytesToUse int, bytesEncoded []byte, clave []byte, decode bool) ([]byte, []byte) {
 	switch true {
 	case bytesToUse <= 4 && decode:
-		return text[:len(text)-(bytesToUse*2)], append(clavesToAdd, text[len(text)-(bytesToUse*2):])
+		return bytesEncoded[:len(bytesEncoded)-bytesToUse], bytesEncoded[len(bytesEncoded)-bytesToUse:]
 	case bytesToUse <= 4:
-		return text + fmt.Sprintf("%x", clave), nil
+		return append(bytesEncoded, clave...), nil
 	case bytesToUse <= 7 && decode:
-		return text[(bytesToUse-4)*2 : len(text)-8], append(clavesToAdd, text[len(text)-8:], text[:(bytesToUse-4)*2])
+		return bytesEncoded[bytesToUse-4 : len(bytesEncoded)-4], append(bytesEncoded[len(bytesEncoded)-4:], bytesEncoded[:bytesToUse-4]...)
 	case bytesToUse <= 7:
-		return fmt.Sprintf("%x", clave[4:]) + text + fmt.Sprintf("%x", clave[:4]), nil
-	case bytesToUse <= 10 && decode:
-		return text[6 : len(text)-(8+(bytesToUse*2-14))], append(clavesToAdd, text[len(text)-8:], text[:6], text[len(text)-(8+(bytesToUse*2-14)):len(text)-8])
-	case bytesToUse <= 10:
-		return fmt.Sprintf("%x", clave[4:7]) + text + fmt.Sprintf("%x", clave[7:]) + fmt.Sprintf("%x", clave[:4]), nil
+		bytes := append(clave[4:], bytesEncoded...)
+		return append(bytes, clave[:4]...), nil
+	case bytesToUse > 7 && decode:
+		midelbytes := bytesEncoded[:3]
+		firstbytes := bytesEncoded[len(bytesEncoded)-4:]
+		lastbytes := bytesEncoded[len(bytesEncoded)-(bytesToUse-3) : len(bytesEncoded)-4]
+
+		return bytesEncoded[3 : len(bytesEncoded)-(bytesToUse-3)], append(append(firstbytes, midelbytes...), lastbytes...)
+	case bytesToUse > 7:
+		bytes := append(clave[4:7], bytesEncoded...)
+		bytes = append(bytes, clave[7:]...)
+		return append(bytes, clave[:4]...), nil
 	}
-	return "", nil
+	return nil, nil
 }
