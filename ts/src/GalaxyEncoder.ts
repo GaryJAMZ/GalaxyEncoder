@@ -1,12 +1,16 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> aa8a39a (new versión with better funcs)
+=======
+>>>>>>> 5a1b3e3 (new versión with better funcs)
 export function GalaxyHexEncoder(textToEncode: string, lenKey: number): string {
     const encoder = new TextEncoder();  
     const encoded = encoder.encode(textToEncode);
     const results = GalaxyEncoder(Array.from(encoded), lenKey);
     return results.map((char) => char.toString(16).padStart(2, '0')).join('');
+<<<<<<< HEAD
 <<<<<<< HEAD
 }
 export function GalaxyHexDecoder(encodedText: string, lenKey: number): string {
@@ -46,6 +50,8 @@ export function GalaxyEncoder(text: string, bytesToUse: number): string {
     return results[0];
 =======
 >>>>>>> aa8a39a (new versión with better funcs)
+=======
+>>>>>>> 5a1b3e3 (new versión with better funcs)
 }
 export function GalaxyHexDecoder(encodedText: string, lenKey: number): string {
     const matchResult = encodedText.match(/.{1,2}/g);
@@ -75,6 +81,7 @@ export function GalaxyDecoder(encodedBytes: number[], lenKey: number): number[] 
         decodedText.push(binaryChanger(clavehex, results[0][i], true));
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     var decodedTextInHex: string = "";
     for (let i = 0; i < results[0].length; i += 2) {
         decodedTextInHex += String.fromCharCode(binaryChanger(clavehex, parseInt(results[0].slice(i, i + 2), 16), true));
@@ -84,6 +91,9 @@ export function GalaxyDecoder(encodedBytes: number[], lenKey: number): number[] 
 =======
     return decodedText;
 >>>>>>> aa8a39a (new versión with better funcs)
+=======
+    return decodedText;
+>>>>>>> 5a1b3e3 (new versión with better funcs)
 }
 function binaryChanger(clave: number[],char: number, decode: boolean): number{
     var sortedClave = [...clave].sort((a, b) => b - a);
@@ -106,6 +116,9 @@ function binaryChanger(clave: number[],char: number, decode: boolean): number{
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5a1b3e3 (new versión with better funcs)
 function buildText(text: number[], clave: number[], bytesToUse: number,decode: boolean): [number[], number[]]{
     switch (true) {
         case bytesToUse <= 4 && decode:
@@ -123,6 +136,7 @@ function buildText(text: number[], clave: number[], bytesToUse: number,decode: b
     }
     return [[], []];
 }
+<<<<<<< HEAD
 =======
 function buildText(text: string, clave: number[], bytesToUse: number,decode: boolean): [string, string]{
 =======
@@ -150,3 +164,5 @@ function buildText(text: number[], clave: number[], bytesToUse: number,decode: b
     return [[], []];
 }
 >>>>>>> aa8a39a (new versión with better funcs)
+=======
+>>>>>>> 5a1b3e3 (new versión with better funcs)
