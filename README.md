@@ -1,17 +1,36 @@
 # GalaxyEncoder
-Fue diseñado principalmente para mantener la integridad de datos y añadir una ofuscación a los mismos, orignalmente solo se manejaban strings, sin embargo ahora se permiten la insercion de cadenas de bytes directamente de forma que obteniendo un array de bytes como entrada y una longitud de clave a elección entre 1 y 10 se generan de forma aleatoria bytes y usando eso como clave inicial hace un bitflip de cada byte en los bytes originales, esta secuencia sucede de forma que se listan todas las posiciones en 1 dentro de cada byte a usar como clave, una vez teniendo estas posiciones se invierten en dichas posiciones de cada byte del array de entrada y dando un resultado de bytes encodeados, la clave que se genero se agrega a los bytes resultantes codificados lo que implica que su reconstruccion es simplemente obtener la clave y hacer el flipbit a la inversa.
+
+**GalaxyEncoder** fue diseñado principalmente para mantener la integridad de los datos y agregar un nivel de ofuscación. Inicialmente, solo trabajaba con strings, pero ahora permite procesar arrays de bytes directamente.
+
+## ¿Cómo funciona?
+GalaxyEncoder toma un array de bytes como entrada, y usando una clave de longitud variable (entre 1 y 10 bytes), genera aleatoriamente una secuencia de bytes. Estos bytes son utilizados como clave inicial para hacer un "bitflip" (inversión de bits) en los bytes originales del array.
+
+### Detalles del proceso:
+1. **Generación de la clave**: Se genera una clave aleatoria con la longitud que el usuario elige (de 1 a 10 bytes).
+2. **Aplicación de la clave**: Para cada byte de la clave, se identifican las posiciones donde los bits están en 1.
+3. **Inversión de bits**: Se invierten los bits en las mismas posiciones de los bytes del array de entrada.
+4. **Resultado**: La clave generada se añade al array de bytes resultante, lo que permite revertir el proceso más adelante.
+
+Este método asegura que los datos estén codificados, pero que puedan ser decodificados fácilmente recuperando la clave y aplicando el proceso de bitflip de manera inversa.
 
 ## Update 2.0
-Se cambiaron las funciones basicas para manejar arrays de bytes en lugar de string, esto amplia el uso de estas funciones permitiendo directamente codificar cualquier cadena de bytes, asi mismo la compatibilidad con las anteriores funciones y sus resultados se manejan por medio de las funciones llamadas GalaxyHexEncoder y GalaxyHexDecoder las cuales funcionan igual que las anteriores funcones de la version 1.
+- Se ha mejorado el código para que ahora maneje arrays de bytes en lugar de strings, ampliando su uso a cualquier tipo de dato que pueda representarse como bytes.
+- Para mantener compatibilidad con la versión anterior, se introdujeron las funciones **GalaxyHexEncoder** y **GalaxyHexDecoder**, que trabajan de manera similar a las funciones de la versión 1. Estas permiten codificar y decodificar strings en formato hexadecimal, preservando la funcionalidad previa.
 
-## Instalar galaxyencoder
+## Instalación
 
-Para instalar usando Go:
+### Go:
+Para instalar GalaxyEncoder en Go:
 
-```go
+```bash
 go get github.com/GaryJAMZ/GalaxyEncoder/go
+
 ```
 Para agregar en TS:
 ```bash
 npm i galaxyencoder
 ```
+### DIFERENCIAS ENTRE GO Y TS
+- En Go, la función recibe el array de bytes ([]byte).
+- En TypeScript, se usa un array de numeros (number[]), que representaran la cadena de bytes, esto con el fun de manejar de forma mas sencilla.
+- En cualquier caso existe GalaxyHexEncoder y GalaxyHexDecoder, las cuales reciben string y retornan string, (al devolver un string en hexadecimal la cadena a codificar dobla su tamaño)

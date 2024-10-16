@@ -1,6 +1,6 @@
 {
   "name": "galaxyencoder",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Codificador de datos invirtiendo bits tomando una clave aleatoria y retornando bytes encodeados o string de esos bytes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
