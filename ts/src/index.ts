@@ -1,2 +1,2 @@
 // src/index.ts
-export { GalaxyEncoder, GalaxyDecoder } from './GalaxyEncoder';
+export { GalaxyEncoder, GalaxyDecoder, GalaxyHexEncoder, GalaxyHexDecoder } from './GalaxyEncoder';

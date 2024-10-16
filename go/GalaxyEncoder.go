@@ -27,7 +27,6 @@ func GalaxyEncoder(bytesToEncode []byte, lenKey int) []byte {
 	var enodedBytes []byte
 	clave := make([]byte, lenKey)
 	rand.Read(clave)
-	fmt.Println(clave)
 	for _, b := range bytesToEncode {
 		enodedBytes = append(enodedBytes, bynaryChangerBytes(clave, b, false))
 	}

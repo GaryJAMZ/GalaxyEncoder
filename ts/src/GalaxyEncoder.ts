@@ -22,11 +22,8 @@ export function GalaxyEncoder(bytesToEncode: number[], lenKey: number): number[]
 }
 export function GalaxyDecoder(encodedBytes: number[], lenKey: number): number[] {
     lenKey = lenKey < 1 ? 1 : lenKey > 10 ? 10 : lenKey;
-    console.log(encodedBytes)
     const results = buildText(encodedBytes, [], lenKey, true);
     let clavehex: number[] = results[1];
-    console.log(clavehex)
-    console.log(lenKey)
     var decodedText: number[] = [];
     for (let i = 0; i < results[0].length; i += 1) {
         decodedText.push(binaryChanger(clavehex, results[0][i], true));
